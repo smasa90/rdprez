@@ -1,49 +1,241 @@
 <!doctype html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<title>reveal.js</title>
+    <title>reveal.js</title>
 
-		<link rel="stylesheet" href="css/reveal.css">
-		<link rel="stylesheet" href="css/theme/black.css">
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/theme/league.css">
 
-		<!-- Theme used for syntax highlighting of code -->
-		<link rel="stylesheet" href="lib/css/zenburn.css">
+    <!-- Theme used for syntax highlighting of code -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
 
-		<!-- Printing and PDF exports -->
-		<script>
-			var link = document.createElement( 'link' );
-			link.rel = 'stylesheet';
-			link.type = 'text/css';
-			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
-			document.getElementsByTagName( 'head' )[0].appendChild( link );
-		</script>
-	</head>
-	<body>
-		<div class="reveal">
-			<div class="slides">
-				<section>Slide 1</section>
-				<section>Slide 2</section>
-			</div>
-		</div>
+    <link rel="stylesheet" href="css/custom.css">
 
-		<script src="lib/js/head.min.js"></script>
-		<script src="js/reveal.js"></script>
+    <!-- Printing and PDF exports -->
+    <script>
+      var link = document.createElement( 'link' );
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+      document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <section>
+          <h2>Operations As A Service</h2>
+          <span style="display: block;">Rundeck Orchestrator</span>
+        </section>
+        <section>
+          <h2>Features { simple }</h2>
+          <ul>
+            <li>Job Definition</li>
+            <li>Job Scheduling</li>
+            <li>Dispatch Job execution to nodes thanks to :</li>
+              <ul>
+                <li>Plugin: PuppetDB Nodes Inventory <span style="color: green" >(Accomplished)</span></li>
+                <li>Built-in feature: Ansible Inventory <span style="color: pink" >(Feasible)</span></li>
+              </ul>
+          </ul>
+        </section>
+        <section>
+          <h2>Job Lifecycle</h2>
+          <ul>
+            <li>A beginning determined by an action ( Trigger ) : </li>
+              <ul>
+                <li>Command ( Ops CLI )</li>
+                <li>Click on an IHM</li>
+                <li>Non-human Action : CRON, API Call, ...</li>
+              </ul>
+            <li>A defined Ending without external action</li>
+            <ul>
+              <li>Signal ( SIGINT | SIGSTP | SIGKILL )</li>
+              <li>CLI Interrupt ( ^C | ^D )</li>
+            </ul>
+            <li>Takes Optionnaly Inputs and produces Output</li>
+          </ul>
+        </section>
+        <section>
+          <h2>Job Anatomy can be :</h2>
+          <ul>
+            <li>Simple as a single command</li>
+              <ul>
+                <li><pre><code class="console">[user@host ~]$ java -jar /path/to/job.jar</code></pre></li>
+                <li><pre><code class="console">[root@host ~]# shutdown -r now</code></pre></li>
+              </ul>
+            <li>Intermediate as a shell / powershell / py / nodejs Script, for example :</li>
+            <ul>
+              <li>Datas | VMs Backups</li>
+              <li>Databases Environment Refreshes</li>
+            </ul>
+          </ul>
+        </section>
+        <section>
+            <h2>Job Anatomy can be :</h2>
+            <ul>
+              <li>Complex with specific deployment :</li>
+              <ul>
+                <li>composed of heavy Frameworks ( SpringBatch )</li>
+                <li>with access to NFS Shares</li>
+                <li>with access to Databases</li>
+                <li>with access to external resources (FTP | APIs)</li>
+              </ul>
+            </ul>
+          </ul>
+          <h2  class="fragment fade-right" style="color: pink; display: block">Synchro-SI</h2>
+        </section>
+        <section>
+          <h1 class="blink" style="color:pink">DEMO</h1>
+        </section>
+        <section>
+          <h2>Rundeck Environment</h2>
+          <ul>
+            <li>Postgres Database</li>
+            <ul>
+              <li>Share Projects definition between Rundeck Nodes</li>
+              <li>Share Jobs definition / activity / scheduling</li>
+            </ul>
+            <li>Network Disk Share</li>
+            <ul><li>Share Job logs between Rundeck Nodes</li></ul>
+            <li>A VSC Repository ( Git ) for Job Definition :</li>
+            <ul>
+              <li>Versionning</li>
+              <li>Decentralizing and sharing between environment</li>
+              <li>Maintainability</li>
+            </ul>
+          </ul>
+        </section>
+        <section>
+          <h2>Rundeck Node</h2>
+          <ul>
+            <li>Is composed of :</li>
+            <ul>
+              <li>Service Engine for Jobs Triggering</li>
+              <li>Web Server for the IHM</li>
+            </ul>
+            <li>HaProxy is the glue between nodes for :</span>
+            <ul>
+              <li>Load Balancing</li>
+              <li>AutoTakeover of scheduled Jobs</li>
+            </ul>
+          </ul>
+          <span style="color: pink; display: block;">( but not yet implemented RM: #29255 )</span>
+        </section>
+        <section>
+          <h1 class="blink" style="color: red">Rundeck IS NOT JUST A GIGANTIC CENTRALIZED CRONTAB</h1>
+        </section>
+        <section>
+          <h2>Features { advanced }</h2>
+          <ul>
+            <li>Job with Complex Workflow definition</li>
+            <li>Dispatched to several nodes</li>
+            <li>Parrallel / Sequential / Hybrid</li>
+          </ul>
+        </section>
+        <section>
+          <section>
+            <img src="https://player.slideplayer.com/24/7033933/data/images/img1.png" />
+          </section>
+          <section>
+            <img src="https://player.slideplayer.com/24/7033933/data/images/img2.png" />
+          </section>
+          <section>
+            <img src="https://player.slideplayer.com/24/7033933/data/images/img3.png" />
+          </section>
+          <section>
+            <img src="https://player.slideplayer.com/24/7033933/data/images/img4.png" />
+          </section>
+          <section>
+            <img src="https://player.slideplayer.com/24/7033933/data/images/img5.png" />
+          </section>
+          <section>
+            <img src="https://player.slideplayer.com/24/7033933/data/images/img6.png" />
+          </section>
+        </section>
+        <section>
+          <h2>A Typical Ops Day</h2>
+          <img src="https://www.rundeck.com/hs-fs/hubfs/images/self_service_pillar/Interruptions_Get_In_Way.png" />
+          <span class="fade-up" style="display: inline-block;">Rundeck is also a tool designed for </span> <h3 class="fragment fade-right" style="display: inline-block; color: pink;">DELEGATING</h3>
+        </section>
+        <section>
+          <h2>#49065 : ACL</h2>
+          <ul>
+            <li>Static File [ :( ]</li>
+            <li>Applied On :</li>
+            <ul>
+              <li>Job Pattern Name ( RegExp )</li>
+              <li>Job groups</li>
+            </ul>
+            <li>Applied To :</li>
+            <ul>
+              <li>AD Groups</li>
+              <li>AD Users ( too static )</li>
+            </ul>
+          </ul>
+        </section>
+        <section>
+          <h3>Job rights Granularity :</h3>
+          <pre><code code class="console">read             View a Job, its executions, and read its def
+view             View a Job and its executions
+update           Modify a job
+delete           Delete a job
+run              Run a job
+runAs            Run a job as another user
+kill             Kill a running job
+killAs           Kill a running job as another user
+create           Create the matching job
+toggle_schedule  Enable/disable the job’s schedule
+toggle_execution Enable/disable the job for execution</code></pre>
+        </section>
+        <section>
+          <h3>Operation As A Service - A dream becomes true</h3>
+          <img style="background-color: white" src="https://www.rundeck.com/hs-fs/hubfs/images/self_service_pillar/Do_It_Do_It_Again.png?t=1541705846093&width=650&name=Do_It_Do_It_Again.png" />
+        </section>
+        <section>
+          <img style="height:650px; background-color: white" src="https://www.rundeck.com/hs-fs/hubfs/images/self_service_pillar/Disconnected_Knowledge.png?t=1541705846093&width=250&name=Disconnected_Knowledge.png" />
+        </section>
+        <section>
+          <h3> ... and business becomes happy :)</h3>
+          <img style="background-color: white" src="https://www.rundeck.com/hs-fs/hubfs/images/self_service_pillar/ROI_SelfService.png?t=1541705846093&width=450&name=ROI_SelfService.png" />
+        </section>
+        <section>
+          <h2>Features to go further ...</h2>
+          <ul>
+            <li>Use exposed API to automate :
+            <ul>
+              <li>add / modify / delete Job Definition</li>
+              <li>Trigger Jobs by non-human users in response to metrics stimulus</li>
+              <li>Manage System | Projects ACLs</li>
+            </ul>
+            <li>Automate VMs Provisionning</li>
+          </ul>
+          <p>A `puppet agent -tv` is just a command with a beginning and a determined ending, what we can do is just limited by our imagination ...</p>
+        </section>
+        <section>
+          <img src="https://cdn-images-1.medium.com/max/2000/1*k8n7Jx9UaLRAxum9HMp8nQ.png" />
+        </section>
+        
+      </div>
+    </div>
+    <script src="lib/js/head.min.js"></script>
+    <script src="js/reveal.js"></script>
 
-		<script>
-			// More info about config & dependencies:
-			// - https://github.com/hakimel/reveal.js#configuration
-			// - https://github.com/hakimel/reveal.js#dependencies
-			Reveal.initialize({
-				dependencies: [
-					{ src: 'plugin/markdown/marked.js' },
-					{ src: 'plugin/markdown/markdown.js' },
-					{ src: 'plugin/notes/notes.js', async: true },
-					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
-				]
-			});
-		</script>
-	</body>
+    <script>
+      // More info about config & dependencies:
+      // - https://github.com/hakimel/reveal.js#configuration
+      // - https://github.com/hakimel/reveal.js#dependencies
+      Reveal.initialize({
+        dependencies: [
+          { src: 'plugin/markdown/marked.js' },
+          { src: 'plugin/markdown/markdown.js' },
+          { src: 'plugin/notes/notes.js', async: true },
+          { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+        ]
+      });
+    </script>
+  </body>
 </html>
