@@ -23,12 +23,12 @@
       document.getElementsByTagName( 'head' )[0].appendChild( link );
     </script>
   </head>
-  <body>
+  <body >
     <div class="reveal">
       <div class="slides">
         <section style="height: 100%;" data-background-opacity="0.25" data-background-size="cover" data-background="https://spectrum.ieee.org/image/MzEwMTk5OA.jpeg" >
           <img style="margin: 0; float: left;" src="https://www.job.nc/sites/default/files/styles/facebook/public/blason.jpg?itok=j39qYz47" />
-          <img style="margin: 0; float: right; height: 200px; width:200px; border-color: black;" src="https://pbs.twimg.com/profile_images/943181882312744961/y1xV4CZ5.jpg" />
+          <img style="margin: 0; float: right; height: 200px; width:200px; border-color: black;" src="assets/img/rundeck.jpg" />
           <div style="width:100%; margin-top: 275px" > 
             <h2 style="color: tomato;">Operations As A Service</h2>
             <span style="display: block; color: pink">Rundeck Orchestrator</span>
@@ -58,7 +58,7 @@
             <li>A defined Ending without external action</li>
             <ul>
               <li>Signal ( SIGINT | SIGSTP | SIGKILL )</li>
-              <li>CLI Interrupt ( ^C | ^D )</li>
+              <li>CLI Interrupt ( ^C | ^Z )</li>
             </ul>
             <li>Takes Optionnaly Inputs and produces Output</li>
           </ul>
@@ -219,9 +219,9 @@ toggle_execution Enable/disable the job for execution</code></pre>
           </ul>
           <p>A `puppet agent -tv` is just a command with a beginning and a determined ending, what we can do is just limited by our imagination ...</p>
         </section>
-        <section>
+        <!--section>
           <img src="https://cdn-images-1.medium.com/max/2000/1*k8n7Jx9UaLRAxum9HMp8nQ.png" />
-        </section>
+        </section-->
         
       </div>
     </div>
@@ -233,6 +233,8 @@ toggle_execution Enable/disable the job for execution</code></pre>
       // - https://github.com/hakimel/reveal.js#configuration
       // - https://github.com/hakimel/reveal.js#dependencies
       Reveal.initialize({
+        slideNumber:  true,
+        mouseWheel:   true,
         dependencies: [
           { src: 'plugin/markdown/marked.js' },
           { src: 'plugin/markdown/markdown.js' },
